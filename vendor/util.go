@@ -14,6 +14,7 @@ import (
 	cryptosuite "github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/sw"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/identitymgr"
 	kvs "github.com/hyperledger/fabric-sdk-go/pkg/fab/keyvaluestore"
+	config "github.com/hyperledger/fabric-sdk-go/pkg/context/api/core"
 )
 
 const (
@@ -170,18 +171,18 @@ func ProposalProcessors(targets []fab.Peer) []fab.ProposalProcessor {
 }
 
 // Enroll for fabric ca user
-func Enroll(username string, password string) error {
-	cryptoSuiteProvider, err := cryptosuite.GetSuiteByConfig(testFabricConfig)
+func Enroll(fabricConfig config.Config, username string, password string, orgName string) error {
+	cryptoSuiteProvider, err := cryptosuite.GetSuiteByConfig(fabricConfig)
 	if err != nil {
 		return err
 	}
 
-	stateStore, err := kvs.New(&kvs.FileKeyValueStoreOptions{Path: testFabricConfig.CredentialStorePath()})
+	stateStore, err := kvs.New(&kvs.FileKeyValueStoreOptions{Path: fabricConfig.CredentialStorePath()})
 	if err != nil {
 		return err
 	}
 
-	caClient, err := identitymgr.New(org2Name, stateStore, cryptoSuiteProvider, testFabricConfig)
+	caClient, err := identitymgr.New(orgName, stateStore, cryptoSuiteProvider, fabricConfig)
 	if err != nil {
 		return err
 	}
