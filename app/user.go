@@ -12,7 +12,7 @@ func RegisterUser() {
 		ConfigFile: "../" + vendor.ConfigFile,
 	}
 
-	setup, err := setup.InitConfig()
+	err := setup.InitConfig()
 	if err != nil {
 		fmt.Printf("Failed InitConfig [%s]\n", err)
 		os.Exit(1)
