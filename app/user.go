@@ -18,6 +18,11 @@ func EnrollUser() {
 		os.Exit(1)
 	}
 	fmt.Println(fabricConfig)
-	fmt.Println("InitConfig succeed")
+
+	if err = vendor.Enroll(fabricConfig, "admin", "adminpw", "org1"); err != nil {
+		fmt.Println("Enroll failed:"+err.Error())
+		os.Exit(1)
+	}
+	fmt.Println("Login succeed")
 }
 
