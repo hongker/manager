@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"github.com/manager/vendor"
+	"os"
 )
 
 // RegisterUser 用户注册
@@ -16,6 +17,7 @@ func RegisterUser() {
 		fmt.Printf("Failed InitConfig [%s]\n", err)
 		os.Exit(1)
 	}
+	fmt.Println("InitConfig succeed")
 }
 
 // EnrollUser 用户登录

@@ -32,6 +32,7 @@ const (
 	ExampleCCInitB    = "200"
 	ExampleCCUpgradeB = "400"
 	AdminUser         = "Admin"
+	ConfigFile        = "config.yaml"
 )
 
 // ExampleCC query and transaction arguments
