@@ -10,6 +10,10 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/peer"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 	"github.com/pkg/errors"
+
+	cryptosuite "github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/sw"
+	"github.com/hyperledger/fabric-sdk-go/pkg/core/identitymgr"
+	kvs "github.com/hyperledger/fabric-sdk-go/pkg/fab/keyvaluestore"
 )
 
 const (
@@ -163,4 +167,28 @@ func ProposalProcessors(targets []fab.Peer) []fab.ProposalProcessor {
 		proposalProcessors = append(proposalProcessors, peer)
 	}
 	return proposalProcessors
+}
+
+// Enroll for fabric ca user
+func Enroll(username string, password string) error {
+	cryptoSuiteProvider, err := cryptosuite.GetSuiteByConfig(testFabricConfig)
+	if err != nil {
+		return err
+	}
+
+	stateStore, err := kvs.New(&kvs.FileKeyValueStoreOptions{Path: testFabricConfig.CredentialStorePath()})
+	if err != nil {
+		return err
+	}
+
+	caClient, err := identitymgr.New(org2Name, stateStore, cryptoSuiteProvider, testFabricConfig)
+	if err != nil {
+		return err
+	}
+
+	err = caClient.Enroll(username, password)
+	if err != nil {
+		return err
+	}
+	return nil
 }

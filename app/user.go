@@ -22,5 +22,8 @@ func RegisterUser() {
 
 // EnrollUser 用户登录
 func EnrollUser() {
-	fmt.Println("Success")
+	if vendor.Enroll("admin", "adminpw") == nil {
+		fmt.Println("Success")
+	}
+	fmt.Println("Failed")
 }
